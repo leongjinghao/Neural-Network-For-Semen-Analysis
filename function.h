@@ -14,7 +14,7 @@ double floatAbs(double a);
 
 //linear regresion function, return pointer variable of sum (z)
 double *lineReg(double input[row][col], double weight[col])
-{   
+{
     double bias = 3.2;
     double total;
     //array to store sum (z) for each row, static to make sure the array remain exist after function call
