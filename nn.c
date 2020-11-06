@@ -4,7 +4,8 @@
 
 
 double weight[col];
-double sum[row];
+//double sum[row];
+//double total;
 
 double *line_reg(double [row][col], double [col]);
 double *sigmoid(double *sum);
@@ -14,7 +15,7 @@ double float_abs(double a);
 
 int main()
 {
-    double input[row][col] = { {1,1,1} , {2,2,2} , {3.3,3.3,3.3} , {4.4,4.4,4.4} , {5,5,5}};
+    double input[row][col] = { {5,5,5} , {2,2,2} , {3.3,3.3,3.3} , {4.4,4.4,4.4} , {1,1,1} };
     double weight[col] = {1,-1,1};
     double bias = 1;
     double actual[row] = {1,1,0,1,0};
@@ -22,28 +23,31 @@ int main()
     double *sigPT;
     double *tempPT;
     double sigArr[row];
-    int itr=0;
+    int itr = 0;
 
     sumPT = line_reg(input,weight);
-    printf("\nSummation: %f", *sumPT);
+
     
-    sigPT = sigmoid(sum);
+    sigPT = sigmoid(sumPT);
+    /*
     for (int i=0; i<row; i++)
     {
         tempPT=sigPT;
         printf("Sigmoid function for row #%d: %f\n", i+1, *tempPT);
         ++tempPT;
-    }
+    }*/
     
+
+    return 0;
 }
 
-//linear regresion function, storing sum of i in pointer
+//linear regresion function, return pointer variable of sum (z)
 double *line_reg(double input[row][col], double weight[col])
 {   
     double bias = 3.2;
-    double *sumPT;
-    double total = 0;
-    sumPT = &total;
+    double total;
+    static double sum[row];
+
 
     for (int i=0; i<row; i++)
     {
@@ -53,29 +57,35 @@ double *line_reg(double input[row][col], double weight[col])
             total+=(input[i][k]*weight[k]);
         }
         total+=bias;
-        *sumPT = total;
-        printf("sum: %f\n",*sumPT);
-        printf("address: %d\n",&sumPT);
+        sum[i] = total;
         //flush value for sum to calculate next line's sum
-        //total = 0;
-        ++sumPT;
+        total = 0;
 
+        //checking
+        printf("sum: %f\n", sum[i]);
+        printf("address: %d\n",&sum[i]);
     }
-    return (sumPT-row);
+    return sum;
 }
 
-//sigmoid activation function using pointer of sum (z)
-double *sigmoid(double *sum)
+//sigmoid activation function using pointer of sum (z), return pointer variable sigPT
+double *sigmoid(double *sumPT)
 {
-    double *tempPT;
-    double *sigPT = tempPT;
+    //DISCUSS IF WE NEED TO RETAIN ORIGINAL POINTER OF SUM AT sum[0]!!!!!!!!!
+    double *tempSumPT;
+    tempSumPT = sumPT;
+    static double sig[row];
+
     for (int i=0; i<row ; i++)
     {
-        *tempPT = 1/(1+exp(-*sum));
-        ++sum;
-        ++tempPT;
+        //not using *tempSumPT+i because ++tempSumPT is faster
+        sig[i] = 1/(1+exp(-*tempSumPT));
+        ++tempSumPT;
+
+        //checking
+        printf("\nSigmoid function at row #%d: addressSum=%d sig=%f",i+1,tempSumPT,sig[i]);
     }
-    return sigPT;
+    return sig;
 }
 
 //mean abs error
