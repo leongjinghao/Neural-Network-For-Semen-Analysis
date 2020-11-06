@@ -7,13 +7,13 @@ double weight[col];
 //double sum[row];
 //double total;
 
-double *line_reg(double [row][col], double [col]);
+double *lineReg(double [row][col], double [col]);
 double *sigmoid(double *sum);
 double maeFunc(double *sigPT, double *actPT, int itr);
-double float_abs(double a);
+double floatAbs(double a);
 
 //linear regresion function, return pointer variable of sum (z)
-double *line_reg(double input[row][col], double weight[col])
+double *lineReg(double input[row][col], double weight[col])
 {   
     double bias = 3.2;
     double total;
@@ -72,18 +72,18 @@ double maeFunc(double *sigPT, double *actPT, int itr)
     //utilise tempActPT to keep actPT address unchanged
     double *tempActPT;
     tempActPT = actPT;
-    //output of MAE
+    //variable for output of MAE per iteration
     double mae=0;
 
     for (int i=0; i<row; i++)
     {
-        mae += float_abs(*(tempSigPT+i)-*(tempActPT+i))/itr;
+        mae += floatAbs(*(tempSigPT+i)-*(tempActPT+i))/itr;
     }
     return mae;
 }
 
 //absolute function for floating number
-double float_abs(double a)
+double floatAbs(double a)
 {
     if (a<0)
     {
