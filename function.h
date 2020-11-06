@@ -9,43 +9,15 @@ double weight[col];
 
 double *line_reg(double [row][col], double [col]);
 double *sigmoid(double *sum);
-double mae(double guess, double actual, int itr);
+double maeFunc(double *sigPT, double *actPT, int itr);
 double float_abs(double a);
-
-
-int main()
-{
-    double input[row][col] = { {5,5,5} , {2,2,2} , {3.3,3.3,3.3} , {4.4,4.4,4.4} , {1,1,1} };
-    double weight[col] = {1,-1,1};
-    double bias = 1;
-    double actual[row] = {1,1,0,1,0};
-    double *sumPT;
-    double *sigPT;
-    double *tempPT;
-    double sigArr[row];
-    int itr = 0;
-
-    sumPT = line_reg(input,weight);
-
-    
-    sigPT = sigmoid(sumPT);
-    /*
-    for (int i=0; i<row; i++)
-    {
-        tempPT=sigPT;
-        printf("Sigmoid function for row #%d: %f\n", i+1, *tempPT);
-        ++tempPT;
-    }*/
-    
-
-    return 0;
-}
 
 //linear regresion function, return pointer variable of sum (z)
 double *line_reg(double input[row][col], double weight[col])
 {   
     double bias = 3.2;
     double total;
+    //array to store sum (z) for each row, static to make sure the array remain exist after function call
     static double sum[row];
 
 
@@ -58,7 +30,7 @@ double *line_reg(double input[row][col], double weight[col])
         }
         total+=bias;
         sum[i] = total;
-        //flush value for sum to calculate next line's sum
+        //flush value for total to calculate next row's sum
         total = 0;
 
         //checking
@@ -71,27 +43,43 @@ double *line_reg(double input[row][col], double weight[col])
 //sigmoid activation function using pointer of sum (z), return pointer variable sigPT
 double *sigmoid(double *sumPT)
 {
-    //DISCUSS IF WE NEED TO RETAIN ORIGINAL POINTER OF SUM AT sum[0]!!!!!!!!!
+    //utilise tempSumPT to keep sumPT address unchanged
     double *tempSumPT;
     tempSumPT = sumPT;
+    //array to store y bar (sigmoid function output), static to make sure the array remain exist after function call
     static double sig[row];
 
     for (int i=0; i<row ; i++)
     {
         //not using *tempSumPT+i because ++tempSumPT is faster
         sig[i] = 1/(1+exp(-*tempSumPT));
-        ++tempSumPT;
 
         //checking
-        printf("\nSigmoid function at row #%d: addressSum=%d sig=%f",i+1,tempSumPT,sig[i]);
+        printf("\nSigmoid function at row #%d:     sum = %f     addressSum = %d     sig = %f",i+1,*tempSumPT,tempSumPT,sig[i]);
+
+        //move to next element
+        ++tempSumPT;
     }
     return sig;
 }
 
 //mean abs error
-double mae(double guess, double actual, int itr) 
+double maeFunc(double *sigPT, double *actPT, int itr) 
 {
-    return float_abs(guess-actual)/itr;
+    //utilise tempSigPT to keep sigPT address unchanged
+    double *tempSigPT;
+    tempSigPT = sigPT;
+    //utilise tempActPT to keep actPT address unchanged
+    double *tempActPT;
+    tempActPT = actPT;
+    //output of MAE
+    double mae=0;
+
+    for (int i=0; i<row; i++)
+    {
+        mae += float_abs(*(tempSigPT+i)-*(tempActPT+i))/itr;
+    }
+    return mae;
 }
 
 //absolute function for floating number
@@ -105,5 +93,4 @@ double float_abs(double a)
     {
         return a;
     }
-    
 }
