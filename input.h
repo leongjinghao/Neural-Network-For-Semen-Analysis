@@ -11,7 +11,7 @@ double *inputData(char *filename)
     static double inputTest[10][9];//2D array for training data output
     static double outputTrain[90][1];//2D array for testing data input
     static double outputTest[10][1];//2D array for testing data output
-    static double *returnArr[5];
+    static double *returnArr[5];//1D array of 5 pointers
     FILE *fertilitydata;
     fertilitydata = fopen(filename,"r"); //open file in read only
 
@@ -74,12 +74,6 @@ double *inputData(char *filename)
         returnArr[3] = *outputTrain;
         returnArr[4] = *outputTest;
         
-        printf("[0]: %f\n", *returnArr[0]);
-        printf("[1]: %f\n", *returnArr[1]);
-        printf("[2]: %f\n", *returnArr[2]);
-        printf("[3]: %f\n", *returnArr[3]);
-        printf("[4]: %f\n", *returnArr[4]);
-
         /* checking
         printf("\nTraverse Input Training array:\n");
         traverseArray(90,9,inputTrain);

@@ -22,11 +22,10 @@ double *lineReg(double *inputPT, double *weightPT)
     double *weightColPT;
     weightColPT = weightPT;
 
-    double bias = 0;
+    double bias = BIAS;
     double summation;
     //array to store summation (z) for each row, static to make sure the array remain exist after function call
     static double sum[row];
-
 
     for (int i=0; i<row; i++)
     {

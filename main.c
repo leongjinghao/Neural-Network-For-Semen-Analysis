@@ -54,6 +54,7 @@ int main()
 }
 
 //function for unpackaging the returnArr (returned pointer)
+//inputArrPT is a pointer of pointers, hence will need to use **
 void unpackage(double **inputArrPT)
 {
     inputArrayPT = *(inputArrPT);
