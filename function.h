@@ -2,41 +2,63 @@
 #include <math.h>
 #include "def.h"
 
-
 double weight[col];
-//double sum[row];
-//double total;
 
-double *lineReg(double [row][col], double [col]);
+double *lineReg(double *inputPT, double *weightPT);
 double *sigmoid(double *sum);
 double maeFunc(double *sigPT, double *actPT, int itr);
 double floatAbs(double a);
 
 //linear regresion function, return pointer variable of sum (z)
-double *lineReg(double input[row][col], double weight[col])
+double *lineReg(double *inputPT, double *weightPT)
 {
-    double bias = 3.2;
-    double total;
-    //array to store sum (z) for each row, static to make sure the array remain exist after function call
+    //pointer to traverse each row of input data, each row having n column of data, n=col
+    double (*inputRowPT)[col];
+    inputRowPT = inputPT;
+    //pointer to traverse each element of input data
+    double *inputColPT;
+    
+    //pointer to traverse each column of weight data
+    double *weightColPT;
+    weightColPT = weightPT;
+
+    double bias = 0;
+    double summation;
+    //array to store summation (z) for each row, static to make sure the array remain exist after function call
     static double sum[row];
 
 
     for (int i=0; i<row; i++)
     {
-        
+        //let the column pointer point at the first element of current row
+        inputColPT = *inputRowPT;
         for (int k=0; k<col; k++)
         {
-            total+=(input[i][k]*weight[k]);
+            summation+=((*inputColPT)*(*weightColPT));
+            
+            //checking
+            printf("\nEQ: %f x %f\n", (*inputColPT), (*weightColPT));
+            
+            //move to next column for both input and weight
+            ++inputColPT;
+            ++weightColPT;
         }
-        total+=bias;
-        sum[i] = total;
-        //flush value for total to calculate next row's sum
-        total = 0;
+        summation+=bias;
+        sum[i] = summation;
+        //flush value for summation to calculate next row's sum
+        summation = 0;
+        
+        //after finished traversing the row, let the row pointer for input to point at next row
+        ++inputRowPT;
+        //reset weight pointer to point at the first element for next loop
+        weightColPT = weightPT;
 
         //checking
+        printf("row: %d\n", i+1);
         printf("sum: %f\n", sum[i]);
         printf("address: %d\n",&sum[i]);
     }
+    
     return sum;
 }
 
@@ -44,8 +66,7 @@ double *lineReg(double input[row][col], double weight[col])
 double *sigmoid(double *sumPT)
 {
     //utilise tempSumPT to keep sumPT address unchanged
-    double *tempSumPT;
-    tempSumPT = sumPT;
+    double *tempSumPT = sumPT;
     //array to store y bar (sigmoid function output), static to make sure the array remain exist after function call
     static double sig[row];
 
