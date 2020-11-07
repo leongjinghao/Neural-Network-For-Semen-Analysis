@@ -48,8 +48,6 @@ int main()
     mae = maeFunc(sigPT,outputTrainPT,itr);
     printf("\nMAE: %f", mae); 
 
-    
-
     return 0;
 }
 
