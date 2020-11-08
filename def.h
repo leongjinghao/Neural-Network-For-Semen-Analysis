@@ -2,5 +2,5 @@
 #define trainRow 90
 #define testRow 10
 #define col 9
-#define targetMAE 0.25
-#define mu 0.5
+#define targetMAE 0.1
+#define mu 0.05

@@ -1,15 +1,11 @@
 #include <math.h>
 #include "def.h"
 
-//global variable
-double bias;
-//iteration by default is 1
-
 //function prototype
 double *lineReg(double *inputPT, double *weightPT, double bias);
 double *sigmoid(double *sum);
 double maeFunc(double *sigPT, double *actPT);
-double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT);
+double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int itr);
 double floatAbs(double a);
 
 //linear regresion function, return pointer variable of sum (z)
@@ -77,7 +73,7 @@ double *sigmoid(double *sumPT)
         sig[i] = 1/(1+exp(-*tempSumPT));
 
         //checking
-        printf("\nSigmoid function at row #%d:     sum = %f     addressSum = %d     sig = %f",i+1,*tempSumPT,tempSumPT,sig[i]);
+        //printf("\nSigmoid function at row #%d:     sum = %f     addressSum = %d     sig = %f",i+1,*tempSumPT,tempSumPT,sig[i]);
 
         //move to next element
         ++tempSumPT;
@@ -99,13 +95,17 @@ double maeFunc(double *sigPT, double *actPT)
 
     for (int i=0; i<trainRow; i++)
     {
-        total += floatAbs(*(tempSigPT+i)-*(tempActPT+i));
+        total += floatAbs(*(tempSigPT)-*(tempActPT));
+        
+        //move to next row for SigPT and ActPT
+        ++tempSigPT;
+        ++tempActPT;
     }
     return total/trainRow;
 }
 
 //error calculation of weight
-double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT) 
+double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int itr) 
 {
     //utilise tempSigPT to keep sigPT address unchanged
     double *tempSigPT;
@@ -122,28 +122,62 @@ double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *input
     double (*rowPT)[col];
     rowPT = inputTrainPT;
     double *colPT;
-    //array to store error of each x (input)
-    static double wErr[col];
+    //array to store sum of weight error accumulated up until iteration I of each x (input)
+    //static array to ensure values from previous iteration is retained
+    //initialise all element to be 0 once on first iteration
+    static double wErrSum[col]={0};
+    //array to store the weight error for the interation at I, wErrSum / iteration
+    //static array to ensure the array remain exsist after function call
+    //initialise all element to be 0 once on first iteration
+    static double wErrReturn[col]={0};
     
+    //for loop to calculate the accumulated weight error at iteration I
     for (int i=0; i<trainRow; i++)
     {
-        //first part of the expression for the error of weight
+        //first part of the expression for the error of weight, with respect to each row of data
         expressionA = (*(tempSigPT+i)-*(tempActPT+i)) * (exp(*(tempSumPT+i))/pow((1+exp(*(tempSumPT+i))),2));
         //let the column pointer point at the first element of current row
         colPT = rowPT;
+
         for (int k=0; k<col; k++)
         {
-            wErr[k]+=expressionA*(*colPT);
+            //checking
+            //printf("accumulated wErrSum[%d]: %f , ",k,wErrSum[k]);
+
+            //to complete the whole expression multiply expressionA with the input (x) value, with respect to each row and each col of input (x)
+            wErrSum[k]+=(expressionA*(*colPT));
+
+            //checking
+            //printf("wErrSum[%d]: accumulate + %f x %f = %f\n", k, expressionA, *colPT, expressionA*(*colPT));
+
             ++colPT;
         }
+
         //move to next row
         ++rowPT;
+        //move to next row for SigPT and ActPT
+        ++tempSigPT;
+        ++tempActPT;
     }
-    return wErr;
+
+    //for loop to calculate the weight error for the iteration at I
+    //reuse colPT to traverse wErrSum array as pointer
+    colPT = wErrSum;
+    for (int k=0; k<col; k++)
+    {
+        wErrReturn[k] = (*colPT)/itr;
+
+        //checking
+        //printf("Error of Weight at [%d]: %f\n",k,wErrReturn[k]);
+
+        //move to next column
+        ++colPT;
+    }
+    return wErrReturn;
 }
 
 //error calculation of bias
-double biasErrFunc(double *sigPT, double *actPT) 
+double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int itr) 
 {
     //utilise tempSigPT to keep sigPT address unchanged
     double *tempSigPT;
@@ -151,14 +185,23 @@ double biasErrFunc(double *sigPT, double *actPT)
     //utilise tempActPT to keep actPT address unchanged
     double *tempActPT;
     tempActPT = actPT;
-    //variable for output of MAE per iteration
-    double total=0;
+    //utilise tempSumPT to keep sumPT address unchanged
+    double *tempSumPT;
+    tempSumPT = sumPT;
+    //variable to store sum of bias error accumulated up until iteration I
+    //static variable to ensure values from previous iteration is retained
+    //initialise variable to be 0 once on first iteration
+    static double biasErrSum=0;
 
     for (int i=0; i<trainRow; i++)
     {
-        total += floatAbs(*(tempSigPT+i)-*(tempActPT+i));
+        biasErrSum += (*(tempSigPT+i)-*(tempActPT+i)) * (exp(*(tempSumPT+i))/pow((1+exp(*(tempSumPT+i))),2));;
+
+        //move to next row for SigPT and ActPT
+        ++tempSigPT;
+        ++tempActPT;
     }
-    return total/trainRow;
+    return biasErrSum/itr;
 }
 
 //absolute function for floating number

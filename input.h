@@ -1,11 +1,11 @@
 #include<stdio.h>
 
 //function prototype
-double *inputData(char *filename);
+double **inputData(char *filename);
 int traverseArray(int m,int n,double array[m][n]);
 
 //function for file access and return an array storing package of pointers
-double *inputData(char *filename)
+double **inputData(char *filename)
 {
     static double inputArray[100][10];//All data within 2D array
     static double inputTrain[90][9];//2D array for training data input

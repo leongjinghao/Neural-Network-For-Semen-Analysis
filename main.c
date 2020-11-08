@@ -15,7 +15,7 @@ int main()
     inputArrPT = inputData(filename);
     unpackage(inputArrPT);
     perceptron(inputTrainPT,weightPT,bias);
-    perceptron(inputTrainPT,weightPT,bias);
+    //perceptron(inputTrainPT,weightPT,bias);
     
     return 0;
 }
