@@ -64,7 +64,7 @@ double *weightGenerate()
         weight[i]=randFloat(-1.0,1.0);
         
         //checking
-        //printf("weight at %d: %f\n", i+1, weight[i]);
+        printf("Generated random Weight[%d] value: %f\n",i,weight[i]);
     }
 
     return weight;
