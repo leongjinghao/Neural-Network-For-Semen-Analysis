@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include <stdlib.h>
 
 //function prototype
 double **inputData(char *filename);
@@ -19,6 +20,7 @@ double **inputData(char *filename)
     if(fertilitydata==NULL) //if file is unable to be found
     {
         printf("Error while opening file!\n");
+        exit(1);
     }
     else{//if file is found
         printf("File found successfully!\n");

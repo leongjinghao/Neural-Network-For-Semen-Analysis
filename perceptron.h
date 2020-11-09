@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "function.h"
 #include "input.h"
 
@@ -23,12 +22,19 @@ void perceptron(double *inputTrainPT, double *weightPT, double bias)
     double *sumPT;
     double *sigPT;
     
-    
-    sumPT = lineReg(inputTrainPT,weightPT,bias);
-    sigPT = sigmoid(sumPT);
-    mae = maeFunc(sigPT,outputTrainPT);
+    //increase the counter of iteration at the begining of each iteration, initial itr value is initialised 0
     ++itr;
-    printf("\nMAE at iteration %d: %f\n",itr,mae); 
+
+    printf("\nIteration #%d\n",itr);
+    
+    //generate a pointer for array of sum (z) for each row of training data
+    sumPT = lineReg(inputTrainPT,weightPT,bias);
+    //generate a pointer for array of sigmoid value for each row of training data
+    sigPT = sigmoid(sumPT);
+    //generate a single value for mae on the whole training data set
+    mae = maeFunc(sigPT,outputTrainPT);
+
+    printf("MAE at iteration %d: %.10f\n",itr,mae); 
 
     //invoke training function, training function will check if perceptron requires furtuer training
     //variable bias has to be pass by reference in order to capture the changed value
@@ -102,7 +108,7 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
             *tempWeightPT-=((*tempWeightErrPT)*mu);
             
             //checking
-            printf("Weight[%d] at iteration %d: %f\n",i,itr,*tempWeightPT);
+            printf("Weight[%d] changed to: %f\n",i,*tempWeightPT);
 
             //move to next column for both tempWeightPT and tempWeightErrPT
             ++tempWeightPT;
@@ -115,7 +121,7 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
         *bias-=(biasErr*mu);
 
         //checking
-        printf("bias at iteration %d: %f\n",itr,*bias);
+        printf("bias changed to: %f\n",*bias);
 
         //invoke perceptron to move on to next iteration using new weight and bias
         perceptron(inputTrainPT,weightPT,*bias);
