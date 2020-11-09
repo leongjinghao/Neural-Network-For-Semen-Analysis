@@ -38,7 +38,6 @@ void perceptron(double *inputTrainPT, double *weightPT, double bias, int itr)
     //invoke training function, training function will check if perceptron requires furtuer training
     //variable bias has to be pass by reference in order to capture the changed value
     training(mae,sigPT,outputTrainPT,sumPT,inputTrainPT,itr,weightPT,&bias);
-    
 }
 
 //function for unpackaging the returnArr (returned pointers)
