@@ -12,6 +12,7 @@ double floatAbs(double a);
 double *lineReg(double *inputPT, double *weightPT, double bias)
 {
     //pointer to traverse each row of input data, each row having n column of data, n=col
+    //pointer of size double * col
     double (*inputRowPT)[col];
     inputRowPT = inputPT;
     //pointer to traverse each element of input data
