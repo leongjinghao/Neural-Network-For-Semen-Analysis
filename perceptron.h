@@ -1,5 +1,6 @@
 #include "function.h"
 #include "input.h"
+#include "output.h"
 
 //global pointer to store the address of different sets of data (array)
 double *inputArrayPT;
@@ -9,13 +10,13 @@ double *outputTrainPT;
 double *outputTestPT;
 
 //function prototype
-void perceptron(double *inputArrPT, double *weightPT, double bias, int itr);
+void perceptron(double *inputArrPT, double *weightPT, double bias, int itr, FILE *outputFile);
 void unpackage(double **inputArrPT);
 double *weightGenerate();
 double randFloat(double min, double max);
-void training(double mae, double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, int itr, double *weightPT, double *bias);
+void training(double mae, double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, int itr, double *weightPT, double *bias, FILE *outputFile);
 
-void perceptron(double *inputTrainPT, double *weightPT, double bias, int itr)
+void perceptron(double *inputTrainPT, double *weightPT, double bias, int itr, FILE *outputFile)
 {
     double *sumPT;
     double *sigPT;
@@ -33,11 +34,12 @@ void perceptron(double *inputTrainPT, double *weightPT, double bias, int itr)
     //generate a single value for mae on the whole training data set
     mae = maeFunc(sigPT,outputTrainPT);
 
-    printf("MAE at iteration %d: %.10f\n",itr,mae); 
+    printf("MAE at iteration %d: %.10f\n",itr,mae);
+    outputMAE(outputFile,itr,mae); 
 
     //invoke training function, training function will check if perceptron requires furtuer training
     //variable bias has to be pass by reference in order to capture the changed value
-    training(mae,sigPT,outputTrainPT,sumPT,inputTrainPT,itr,weightPT,&bias);
+    training(mae,sigPT,outputTrainPT,sumPT,inputTrainPT,itr,weightPT,&bias,outputFile);
 }
 
 //function for unpackaging the returnArr (returned pointers)
@@ -77,7 +79,7 @@ double randFloat(double min, double max)
 }
 
 //training function
-void training(double mae, double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, int itr, double *weightPT, double *bias)
+void training(double mae, double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, int itr, double *weightPT, double *bias, FILE *outputFile)
 {
     double *weightErrPT;
     double biasErr;
@@ -122,7 +124,7 @@ void training(double mae, double *sigPT, double *outputTrainPT, double *sumPT, d
         printf("bias changed to: %f\n",*bias);
 
         //invoke perceptron to move on to next iteration using new weight and bias
-        perceptron(inputTrainPT,weightPT,*bias,itr);
+        perceptron(inputTrainPT,weightPT,*bias,itr,outputFile);
     }
     else
     {

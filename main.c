@@ -7,6 +7,17 @@ int main()
     //at the begining of the program, iteration is at 0
     int itr = 0;
 
+    //flush all data inside outputFile
+    FILE *outputFile = fopen("mae_Output.txt", "w");
+    if (outputFile == NULL)
+    {
+        printf("Output file does not exist!\n");
+        exit(-1);
+    }
+    fprintf(outputFile,"");
+    outputFile = fopen("mae_Output.txt", "a");
+    
+
     //utilised for generating random float
     srand(time(NULL));
     //generate an array of random weight for each column of input
@@ -26,7 +37,7 @@ int main()
     unpackage(inputArrPT);
 
     //initialise perceptron and train the perceptron accordingly
-    perceptron(inputTrainPT,weightPT,bias,itr);
+    perceptron(inputTrainPT,weightPT,bias,itr,outputFile);
     
     return 0;
 }
