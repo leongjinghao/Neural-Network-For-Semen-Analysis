@@ -7,15 +7,11 @@ int main()
     //at the begining of the program, iteration is at 0
     int itr = 0;
 
-    //flush all data inside outputFile
-    FILE *outputFile = fopen("mae_Output.txt", "w");
-    if (outputFile == NULL)
-    {
-        printf("Output file does not exist!\n");
-        exit(-1);
-    }
+    //create a new file for mae output, if previous version exist, it will be replaced
+    FILE *outputFile = fopen(FILEOUT, "w");
     fprintf(outputFile,"");
-    outputFile = fopen("mae_Output.txt", "a");
+    //change fopen mode to append
+    outputFile = fopen(FILEOUT, "a");
     
 
     //utilised for generating random float
