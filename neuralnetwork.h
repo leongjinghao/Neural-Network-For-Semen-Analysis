@@ -92,17 +92,17 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
         double *yBarP1WeightAft;
         double *yBarP2WeightAft;
         double *yBarP3WeightAft;
-        yBarP1WeightBef[0] = *weightP3;
-        yBarP2WeightBef[0] = *(weightP3+1);
-        yBarP3WeightBef[0] = *(weightP3+2);
+        yBarP1WeightBef[0] = *weightPF;
+        yBarP2WeightBef[0] = *(weightPF+1);
+        yBarP3WeightBef[0] = *(weightPF+2);
 
         //training(yBarP1,outputTrainPT,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,trainRow,col);
 
         //conduct training on final perceptron
         training(yBarP3,outputTrainPT,sumPF,inputPF,itr,weightPF,&biasPF,outputFile,trainRow,3);
-        yBarP1WeightAft = weightP3;
-        yBarP2WeightAft = (weightP3 + 1);
-        yBarP3WeightAft = (weightP3 + 2);
+        yBarP1WeightAft = weightPF;
+        yBarP2WeightAft = (weightPF + 1);
+        yBarP3WeightAft = (weightPF + 2);
 
         //conduct training on P1 and P2, using the changes in weight as the reference for error
         //assumption: error calculation is by referencing changes in weight, yBarP1 and yBarP2 each has a single weight pass to P3, therefore (1 x 1)
