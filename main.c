@@ -6,6 +6,8 @@ int main()
 {
     //at the begining of the program, iteration is at 0
     int itr = 0;
+    //utilised for generating random float
+    srand(time(NULL));
 
     //create a new file for mae output, if previous version exist, it will be replaced
     FILE *outputFile = fopen(FILEOUT, "w");
@@ -39,14 +41,22 @@ int main()
     biasP2 = randFloat(-1.0,1.0);
 
     //**Perceptron 3**
-    //generate an array of random weight for each perceptron output in hidden layer
+    //generate an array of random weight for each column of input for perceptron 2
     static double *weightP3;
-    weightP3 = weightGenerate(2);
-    //generate a random bias for perceptron 3
+    weightP3 = weightGenerate(col);
+    //generate a random bias for perceptron 2
     static double biasP3;
     biasP3 = randFloat(-1.0,1.0);
 
-    neuralNetwork(inputTrainPT,itr,outputFile,weightP1,biasP1,weightP2,biasP2,weightP3,biasP3);
+    //**Final Perceptron**
+    //generate an array of random weight for each perceptron output in hidden layer
+    static double *weightPF;
+    weightPF = weightGenerate(2);
+    //generate a random bias for final perceptron
+    static double biasPF;
+    biasPF = randFloat(-1.0,1.0);
+
+    neuralNetwork(inputTrainPT,itr,outputFile,weightP1,biasP1,weightP2,biasP2,weightP3,biasP3,weightPF,biasPF);
     
     return 0;
 }
