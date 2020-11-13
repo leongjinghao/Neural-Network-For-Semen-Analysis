@@ -92,7 +92,6 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
         //assumption: error calculation is by referencing changes in weight, yBarP1 and yBarP2 each has a single weight pass to P3, therefore (1 x 1)
         training(yBarP1WeightBef,yBarP1WeightAft,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,1,1);
         training(yBarP2WeightBef,yBarP2WeightAft,sumP2,inputTrainPT,itr,weightP2,&biasP2,outputFile,1,1);
-        training(yBarP3WeightBef,yBarP3WeightAft,sumP3,inputTrainPT,itr,weightP3,&biasP3,outputFile,1,1);
         //training(yBarP1,outputTrainPT,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,trainRow,col);
         //training(yBarP2,outputTrainPT,sumP2,inputTrainPT,itr,weightP2,&biasP2,outputFile,trainRow,col);
 
@@ -100,7 +99,7 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
         printf("MAE at iteration %d: %.10f\n",itr,mae);
 
         //move to next iteration
-        neuralNetwork(inputTrainPT,itr,outputFile,weightP1,biasP1,weightP2,biasP2,weightP3,biasP3,weightPF,biasPF);
+        neuralNetwork(inputTrainPT,itr,outputFile,weightP1,biasP1,weightP2,biasP2,weightPF,biasPF);
     }
     else
     {
