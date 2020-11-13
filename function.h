@@ -5,8 +5,8 @@
 double *lineReg(double *inputPT, double *weightPT, double bias, int inputRow, int inputCol);
 double *sigmoid(double *sumPT, int outputRow);
 double maeFunc(double *sigPT, double *actPT, int inputRow);
-double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int itr, int inputRow, int inputCol);
-double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int itr, int inputRow);
+double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int inputRow, int inputCol);
+double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int inputRow);
 double floatAbs(double a);
 
 //linear regresion function, return pointer variable of sum (z)
@@ -107,7 +107,7 @@ double maeFunc(double *sigPT, double *actPT, int inputRow)
 }
 
 //error calculation of weight
-double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int itr, int inputRow, int inputCol) 
+double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int inputRow, int inputCol) 
 {
     //utilise tempSigPT to keep sigPT address unchanged
     double *tempSigPT;
@@ -169,7 +169,7 @@ double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *input
     colPT = wErrSum;
     for (int k=0; k<col; k++)
     {
-        wErrReturn[k] = (*colPT)/itr;
+        wErrReturn[k] = (*colPT)/inputRow;
 
         //checking
         //printf("Error of Weight at [%d]: %f\n",k,wErrReturn[k]);
@@ -181,7 +181,7 @@ double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *input
 }
 
 //error calculation of bias
-double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int itr, int inputRow) 
+double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int inputRow) 
 {
     //utilise tempSigPT to keep sigPT address unchanged
     double *tempSigPT;
@@ -206,7 +206,7 @@ double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int itr, int inp
         ++tempActPT;
         ++tempSumPT;
     }
-    return biasErrSum/itr;
+    return biasErrSum/inputRow;
 }
 
 //absolute function for floating number

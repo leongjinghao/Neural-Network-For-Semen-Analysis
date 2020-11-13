@@ -115,7 +115,7 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
     double biasErr;
 
     printf("Training perceptron at iteration %d...\n",itr);
-    weightErrPT=weightErrFunc(sigPT,outputTrainPT,sumPT,inputTrainPT,itr,inputRow,inputCol);
+    weightErrPT=weightErrFunc(sigPT,outputTrainPT,sumPT,inputTrainPT,inputRow,inputCol);
     
     //pointer to the weight array, will be used to change the value of the weight directly
     //temporary pointer is used to maintain original pointed address of the weight pointer while traversing
@@ -142,7 +142,7 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
 
     //backwards propagate bias
     //calculate error of bias
-    biasErr=biasErrFunc(sigPT,outputTrainPT,sumPT,itr,inputRow);
+    biasErr=biasErrFunc(sigPT,outputTrainPT,sumPT,inputRow);
     *bias-=(biasErr*mu);
 
     //checking
