@@ -10,22 +10,18 @@ double *outputTrainPT;
 double *outputTestPT;
 
 //function prototype
-double *perceptron(double *inputArrPT, double *weightPT, double bias, int itr, int inputRow, int inputCol);
+double *perceptron(double *inputArrPT, double *weightPT, double bias, int inputRow, int inputCol);
 void unpackage(double **inputArrPT);
 double *weightGenerate(int numRandWeight);
 double randFloat(double min, double max);
 
-double *perceptron(double *inputTrainPT, double *weightPT, double bias, int itr, int inputRow, int inputCol)
+double *perceptron(double *inputTrainPT, double *weightPT, double bias, int inputRow, int inputCol)
 {
     double *sumPT;
     double *sigPT;
     
     //generate a pointer for array of sum (z) for each row of training data
     sumPT = lineReg(inputTrainPT,weightPT,bias,inputRow,inputCol);
-    
-    //invoke training function, training function will check if perceptron requires furtuer training
-    //variable bias has to be pass by reference in order to capture the changed value
-    //training(mae,sigPT,outputTrainPT,sumPT,inputTrainPT,itr,weightPT,&bias,outputFile);
 
     return sumPT;
 }

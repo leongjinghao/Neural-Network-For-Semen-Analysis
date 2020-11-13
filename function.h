@@ -138,7 +138,7 @@ double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *input
     for (int i=0; i<inputRow; i++)
     {
         //first part of the expression for the error of weight, with respect to each row of data
-        expressionA = (*tempSigPT-*tempActPT) * (exp(*tempSumPT)/pow((1+exp(*tempSumPT)),2));
+        expressionA = (*tempSigPT-*tempActPT) * (exp(*tempSumPT)/pow((1.0+exp(*tempSumPT)),2.0));
         //let the column pointer point at the first element of current row
         colPT = rowPT;
 
@@ -169,7 +169,7 @@ double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *input
     colPT = wErrSum;
     for (int k=0; k<col; k++)
     {
-        wErrReturn[k] = (*colPT)/inputRow;
+        wErrReturn[k] = (*colPT)/(double)inputRow;
 
         //checking
         //printf("Error of Weight at [%d]: %f\n",k,wErrReturn[k]);
@@ -199,14 +199,14 @@ double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int inputRow)
 
     for (int i=0; i<inputRow; i++)
     {
-        biasErrSum += (*tempSigPT-*tempActPT) * (exp(*tempSumPT)/pow((1+exp(*tempSumPT)),2));
+        biasErrSum += (*tempSigPT-*tempActPT) * (exp(*tempSumPT)/pow((1.0+exp(*tempSumPT)),2.0));
 
         //move to next row for SigPT, ActPT and SumPT, variables used in the equation
         ++tempSigPT;
         ++tempActPT;
         ++tempSumPT;
     }
-    return biasErrSum/inputRow;
+    return biasErrSum/(double)inputRow;
 }
 
 //absolute function for floating number

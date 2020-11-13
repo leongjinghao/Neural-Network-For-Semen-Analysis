@@ -2,7 +2,7 @@
 #include <time.h>
 
 void neuralNetwork(double* inputTraining, int itr, FILE* outputFile, double *weightP1, double biasP1, double *weightP2, double biasP2, double *weightPF, double biasPF);
-void training(double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, int itr, double *weightPT, double *bias, FILE *outputFile, int inputRow, int inputCol);
+void training(double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, double *weightPT, double *bias, FILE *outputFile, int inputRow, int inputCol);
 
 void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weightP1, double biasP1, double *weightP2, double biasP2, double *weightPF, double biasPF)
 {
@@ -17,7 +17,7 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
     double *sumP1;
     double *yBarP1;
     //y bar, sigmoid values of perceptron 1, an array of 90 values
-    sumP1 = perceptron(inputTrainPT,weightP1,biasP1,itr,trainRow,col);
+    sumP1 = perceptron(inputTrainPT,weightP1,biasP1,trainRow,col);
     yBarP1 = sigmoid(sumP1,trainRow);
 
     /*mae = maeFunc(yBarP1,outputTrainPT,trainRow);
@@ -29,7 +29,7 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
     double *sumP2;
     double *yBarP2;
     //y bar, sigmoid values of perceptron 2, an array of 90 values
-    sumP2 = perceptron(inputTrainPT,weightP2,biasP2,itr,trainRow,col);
+    sumP2 = perceptron(inputTrainPT,weightP2,biasP2,trainRow,col);
     yBarP2 = sigmoid(sumP2,trainRow);
 
     //**Final PERCEPTRON**
@@ -60,7 +60,7 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
     }
 
     //linear regression for 90 rows of all perceptrons on hidden layer
-    sumPF = perceptron(inputPF,weightPF,biasPF,itr,trainRow,2);
+    sumPF = perceptron(inputPF,weightPF,biasPF,trainRow,2);
     yBarPF = sigmoid(sumPF,trainRow);
     //generate a single value for mae on the whole training data set
     mae = maeFunc(yBarPF,outputTrainPT,trainRow);
@@ -84,16 +84,17 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
         //training(yBarP1,outputTrainPT,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,trainRow,col);
 
         //conduct training on final perceptron
-        training(yBarPF,outputTrainPT,sumPF,inputPF,itr,weightPF,&biasPF,outputFile,trainRow,3);
+        training(yBarPF,outputTrainPT,sumPF,inputPF,weightPF,&biasPF,outputFile,trainRow,3);
         yBarP1WeightAft = weightPF;
         yBarP2WeightAft = (weightPF + 1);
-
+        
         //conduct training on P1 and P2, using the changes in weight as the reference for error
         //assumption: error calculation is by referencing changes in weight, yBarP1 and yBarP2 each has a single weight pass to P3, therefore (1 x 1)
-        training(yBarP1WeightBef,yBarP1WeightAft,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,1,1);
-        training(yBarP2WeightBef,yBarP2WeightAft,sumP2,inputTrainPT,itr,weightP2,&biasP2,outputFile,1,1);
-        //training(yBarP1,outputTrainPT,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,trainRow,col);
-        //training(yBarP2,outputTrainPT,sumP2,inputTrainPT,itr,weightP2,&biasP2,outputFile,trainRow,col);
+        printf("Training perceptron at iteration %d...\n",itr);
+        //training(yBarP1WeightBef,yBarP1WeightAft,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,1,1);
+        //training(yBarP2WeightBef,yBarP2WeightAft,sumP2,inputTrainPT,itr,weightP2,&biasP2,outputFile,1,1);
+        training(yBarP1,outputTrainPT,sumP1,inputTrainPT,weightP1,&biasP1,outputFile,trainRow,col);
+        training(yBarP2,outputTrainPT,sumP2,inputTrainPT,weightP2,&biasP2,outputFile,trainRow,col);
 
 
         printf("MAE at iteration %d: %.10f\n",itr,mae);
@@ -109,12 +110,11 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
 
 
 //training function, backwards propagate weight and bias
-void training(double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, int itr, double *weightPT, double *bias, FILE *outputFile, int inputRow, int inputCol)
+void training(double *sigPT, double *outputTrainPT, double *sumPT, double *inputTrainPT, double *weightPT, double *bias, FILE *outputFile, int inputRow, int inputCol)
 {
     double *weightErrPT;
     double biasErr;
 
-    printf("Training perceptron at iteration %d...\n",itr);
     weightErrPT=weightErrFunc(sigPT,outputTrainPT,sumPT,inputTrainPT,inputRow,inputCol);
     
     //pointer to the weight array, will be used to change the value of the weight directly
@@ -133,7 +133,7 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
         *tempWeightPT-=((*tempWeightErrPT)*mu);
         
         //checking
-        //printf("Weight[%d] changed to: %f\n",i,*tempWeightPT);
+        printf("Weight[%d] changed to: %f\n",i,*tempWeightPT);
 
         //move to next column for both tempWeightPT and tempWeightErrPT
         ++tempWeightPT;
@@ -146,5 +146,5 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
     *bias-=(biasErr*mu);
 
     //checking
-    //printf("bias changed to: %f\n",*bias);
+    printf("bias changed to: %f\n",*bias);
 }
