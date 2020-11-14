@@ -133,7 +133,7 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
         *tempWeightPT-=((*tempWeightErrPT)*mu);
         
         //checking
-        printf("Weight[%d] changed to: %f\n",i,*tempWeightPT);
+        //printf("Weight[%d] changed to: %f\n",i,*tempWeightPT);
 
         //move to next column for both tempWeightPT and tempWeightErrPT
         ++tempWeightPT;
@@ -146,5 +146,5 @@ void training(double *sigPT, double *outputTrainPT, double *sumPT, double *input
     *bias-=(biasErr*mu);
 
     //checking
-    printf("bias changed to: %f\n",*bias);
+    //printf("bias changed to: %f\n",*bias);
 }

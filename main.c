@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "neuralnetwork.h"
+#include "gnuplotMAE.h"
 
 int main()
 {
@@ -49,6 +50,9 @@ int main()
     biasPF = randFloat(-1.0,1.0);
 
     neuralNetwork(inputTrainPT,itr,outputFile,weightP1,biasP1,weightP2,biasP2,weightPF,biasPF);
+
+    //plot MAE
+    gnuplotMAE();
     
     return 0;
 }

@@ -23,7 +23,7 @@ double *lineReg(double *inputPT, double *weightPT, double bias, int inputRow, in
     double *weightColPT;
     weightColPT = weightPT;
 
-    double summation;
+    double summation = 0;
     //array to store summation (z) for each row, static to make sure the array remain exist after function call
     static double sum[totalRow];
 
@@ -128,11 +128,13 @@ double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *input
     //array to store sum of weight error accumulated up until iteration I of each x (input)
     //static array to ensure values from previous iteration is retained
     //initialise all element to be 0 once on first iteration
-    static double wErrSum[col]={0};
+    static double wErrSum[col];
+    memset(wErrSum,0.0,sizeof wErrSum); 
     //array to store the weight error for the interation at I, wErrSum / iteration
     //static array to ensure the array remain exsist after function call
     //initialise all element to be 0 once on first iteration
-    static double wErrReturn[col]={0};
+    static double wErrReturn[col];
+    memset(wErrReturn,0.0,sizeof wErrReturn); 
     
     //for loop to calculate the accumulated weight error at iteration I
     for (int i=0; i<inputRow; i++)
@@ -195,7 +197,8 @@ double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int inputRow)
     //variable to store sum of bias error accumulated up until iteration I
     //static variable to ensure values from previous iteration is retained
     //initialise variable to be 0 once on first iteration
-    static double biasErrSum=0;
+    static double biasErrSum;
+    biasErrSum = 0;
 
     for (int i=0; i<inputRow; i++)
     {
