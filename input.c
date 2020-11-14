@@ -55,6 +55,8 @@ int inputData(char *filename){
             }
         }
 
+        //Traverse all arrays
+        /*
         printf("Traverse Input Training array:\n");
         traverseArray(90,9,inputtrain);
         printf("Traverse Output Training array:\n");
@@ -63,7 +65,7 @@ int inputData(char *filename){
         traverseArray(10,9,inputtest);
         printf("Traverse Output Test array:\n");
         traverseArray(10,1,outputtest);
-
+        */
     }
     return 1;
 }
