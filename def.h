@@ -4,5 +4,5 @@
 #define testRow 10
 #define totalRow 100
 #define col 9
-#define targetMAE 0.01
+#define targetMAE 0.25
 #define mu 0.05

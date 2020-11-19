@@ -7,7 +7,6 @@ double *sigmoid(double *sumPT, int outputRow);
 double maeFunc(double *sigPT, double *actPT, int inputRow);
 double *weightErrFunc(double *sigPT, double *actPT, double *sumPT, double *inputTrainPT, int inputRow, int inputCol);
 double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int inputRow);
-double floatAbs(double a);
 
 //linear regresion function, return pointer variable of sum (z)
 double *lineReg(double *inputPT, double *weightPT, double bias, int inputRow, int inputCol)
@@ -36,7 +35,7 @@ double *lineReg(double *inputPT, double *weightPT, double bias, int inputRow, in
             summation+=((*inputColPT)*(*weightColPT));
             
             //checking
-            //printf("\nEQ: %f x %f\n", (*inputColPT), (*weightColPT));
+            //printf("EQ: %f x %f\n", (*inputColPT), (*weightColPT));
             
             //move to next column for both input and weight
             ++inputColPT;
@@ -97,7 +96,7 @@ double maeFunc(double *sigPT, double *actPT, int inputRow)
 
     for (int i=0; i<inputRow; i++)
     {
-        total += floatAbs(*tempSigPT-*tempActPT);
+        total += fabs(*tempSigPT-*tempActPT);
         
         //move to next row for SigPT and ActPT
         ++tempSigPT;
@@ -210,17 +209,4 @@ double biasErrFunc(double *sigPT, double *actPT, double *sumPT, int inputRow)
         ++tempSumPT;
     }
     return biasErrSum/(double)inputRow;
-}
-
-//absolute function for floating number
-double floatAbs(double a)
-{
-    if (a<0)
-    {
-        return -a;
-    }
-    else
-    {
-        return a;
-    }
 }

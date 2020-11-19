@@ -53,6 +53,6 @@ int main()
 
     //plot MAE
     gnuplotMAE();
-    
+
     return 0;
 }

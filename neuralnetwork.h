@@ -91,10 +91,10 @@ void neuralNetwork(double* inputTrainPT, int itr, FILE* outputFile, double *weig
         //conduct training on P1 and P2, using the changes in weight as the reference for error
         //assumption: error calculation is by referencing changes in weight, yBarP1 and yBarP2 each has a single weight pass to P3, therefore (1 x 1)
         printf("Training perceptron at iteration %d...\n",itr);
-        //training(yBarP1WeightBef,yBarP1WeightAft,sumP1,inputTrainPT,itr,weightP1,&biasP1,outputFile,1,1);
-        //training(yBarP2WeightBef,yBarP2WeightAft,sumP2,inputTrainPT,itr,weightP2,&biasP2,outputFile,1,1);
-        training(yBarP1,outputTrainPT,sumP1,inputTrainPT,weightP1,&biasP1,outputFile,trainRow,col);
-        training(yBarP2,outputTrainPT,sumP2,inputTrainPT,weightP2,&biasP2,outputFile,trainRow,col);
+        training(yBarP1WeightBef,yBarP1WeightAft,sumP1,inputTrainPT,weightP1,&biasP1,outputFile,1,1);
+        training(yBarP2WeightBef,yBarP2WeightAft,sumP2,inputTrainPT,weightP2,&biasP2,outputFile,1,1);
+        //training(yBarP1,outputTrainPT,sumP1,inputTrainPT,weightP1,&biasP1,outputFile,trainRow,col);
+        //training(yBarP2,outputTrainPT,sumP2,inputTrainPT,weightP2,&biasP2,outputFile,trainRow,col);
 
 
         printf("MAE at iteration %d: %.10f\n",itr,mae);
