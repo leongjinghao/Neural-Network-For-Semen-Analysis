@@ -11,16 +11,17 @@ float linearReg[TRAIN];//array to store all values of linear regression
 float sigmoid[TRAIN];
 float mae=1;
 float werr[9],berr;
+float mmse=0;
 //function prototype
-float feedforward(float array[][9],float w[9],float b,FILE *bitch);
+float feedforward(float array[][9],float w[9],float b,FILE *plotfilename,FILE *outputfilename);
 void weightErr();
 void biasErr();
 void feedback();
 //function
-float feedforward(float array[][9],float w[9],float b,FILE *bitch){
+float feedforward(float array[][9],float w[9],float b,FILE *plotfilename,FILE *outputfilename){
     static int itrcount=0;
     itrcount++;
-    printf("\nITERATION %d\n",itrcount);
+    //printf("\nITERATION %d\n",itrcount);
     float total=0;
     //Linear Regression
     for(int i=0;i<TRAIN;i++){
@@ -45,7 +46,16 @@ float feedforward(float array[][9],float w[9],float b,FILE *bitch){
         //printf("Sigmoid %d = %f\n",i+1,sigmoid[i]);
     }
 
-    //MMSE
+    //MMSE (Need to shift somewhere else, only before trained and after trained is required)
+    mmse=0;
+    for(int i=0;i<TRAIN;i++){
+        mmse+=pow((sigmoid[i]-outputtrain[i]),2);
+        //printf("sigmoid %d: %f || outputtrain %d: %f\n",i+1,sigmoid[i],i+1,outputtrain[i]);
+        //printf("MSSE[%d]: %f\n",i+1,mmse);
+    }
+    mmse=mmse/TRAIN;
+    printf("MMSE: %f\n",mmse);
+    fprintf(outputfilename,"%d   %10f\n",itrcount,mmse);
 
     //MAE
     mae=0;//reset mae to 0 per iteration
@@ -55,13 +65,12 @@ float feedforward(float array[][9],float w[9],float b,FILE *bitch){
         //printf("MAE[%d]: %f\n",i+1,mae);
     }
     mae=mae/TRAIN;
-    printf("MAE: %f\n",mae);
-    fprintf(bitch,"%d   %f\n",itrcount,mae);
+    //printf("MAE: %f\n",mae);
+    fprintf(plotfilename,"%d   %.10f\n",itrcount,mae);
     return mae;
 }
 void weightErr(){
-    float sum;
-    float fuck;
+    float sum,fuck;
     for(int j=0;j<9;j++){
         sum=0;
         for(int i=0;i<TRAIN;i++){
@@ -89,12 +98,12 @@ void feedback(){
     //}
     biasErr();
     //printf("bias error: %f\n",berr);
-    //NEW WEIGHT BITCH
+    //NEW WEIGHT
     for(int i=0;i<9;i++){
         weight[i]=weight[i]-RATE*werr[i];
         //printf("new w%d: %f\n",i+1,weight[i]);
     }
-    //NEW BIAS FUCKER
+    //NEW BIAS
     bias=bias-RATE*berr;
     //printf("new b: %f\n",bias);
 }

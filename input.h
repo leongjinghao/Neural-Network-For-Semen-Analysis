@@ -58,8 +58,8 @@ int inputData(char *filename){
     //traverse2DArray(90,9,inputtrain);
     //printf("\nTraverse Output Training array:\n");
     //traverseArray(90,outputtrain);
-    printf("\nTraverse Input Test array:\n");
-    traverse2DArray(10,9,inputtest);
+    //printf("\nTraverse Input Test array:\n");
+    //traverse2DArray(10,9,inputtest);
     //printf("\nTraverse Output Test array:\n");
     //traverseArray(10,outputtest);
     
@@ -75,7 +75,7 @@ void traverse2DArray(int m,int n,float array[m][n]){
     for(int i=0;i<m;i++){
             printf("Array %d: ",i+1);
             for(int j=0;j<n;j++){
-                printf("%.2f ",array[i][j]);
+                printf("%f ",array[i][j]);
             }
             printf("\n");
         }
