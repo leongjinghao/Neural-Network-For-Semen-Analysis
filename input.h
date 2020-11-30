@@ -6,12 +6,13 @@ float inputtest[10][9];//2D array for training data output
 float outputtrain[90];//1D array for testing data input
 float outputtest[10];//1D array for testing data output
 //function prototype
-int inputData(char *filename);
+int inputData();
 void traverseArray(int m,float array[m]);
 void traverse2DArray(int m,int n,float array[m][n]);
 //function 
-int inputData(char *filename){
+int inputData(){
     FILE *fertilitydata;
+    char filename[]="fertility_Diagnosis_Data_Group9_13.txt";
     if(fertilitydata==NULL){//if file is unable to be found
         printf("Error while opening file!\n");
     }
@@ -53,7 +54,6 @@ int inputData(char *filename){
     }
 
     //Traverse all arrays
-    
     //printf("\nTraverse Input Training array:\n");
     //traverse2DArray(90,9,inputtrain);
     //printf("\nTraverse Output Training array:\n");
