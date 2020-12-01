@@ -11,25 +11,32 @@ int main()
     //at the begining of the program, iteration is at 1
     int itr = 1;
     double mae;
+    //arrays to store all the linear regression results and sigmoid activated results for each perceptron (8 in total)
+    //2 additional array to store the linear regression results and sigmoid activated results for training set 
     double sum[8][trainRow],sig[8][trainRow],sumTest[testRow],sigTest[testRow];
+    //pointer to indicate which set of sum[num][row] and sig[num][row], we are accessing for each perceptrons
     double (*sumPT)[trainRow]=sum;
     double (*sigPT)[trainRow]=sig;
+    //pointers  to indicate the last perceptron, P8, which is the output layer perceptron
     double *sumOPT = sumPT+7;
     double *sigOPT = sigPT+7;
+    //this is the array to store the converted sig[7][row] to sigHidden[row][7], one for training one for testing
     double sigHidden[trainRow][7];
     double sigTestHidden[trainRow][7];
+    //using a pointer variable to point at the array, can do arithmatic opearation 
     double *sumTestPT=sumTest;
     double *sigTestPT=sigTest;
-    int trainCMetrix[2][2]={{0,0},{0,0}};
-    int testCMetrix[2][2]={{0,0},{0,0}};
+    //initialise confusion matrix
+    int trainCMatrix[2][2]={{0,0},{0,0}};
+    int testCMatrix[2][2]={{0,0},{0,0}};
     int correctPrediction;
     double accuracy;
 
     //utilised for generating random float
     srand(time(NULL));
     //generate random weight for 7 hidden layer perceptrons and 1 output layer perceptron
-    double weightH[7][9]/*={{1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1}}*/;
-    double weightO[7]/*={1,1,1,1,1,1,1}*/;
+    double weightH[7][9];
+    double weightO[7];
     double (*weightHPT)[9] = weightH;
     double *weightOPT = weightO;
     for (int i=0;i<7;i++)
@@ -41,9 +48,9 @@ int main()
     
 
     //generate a random bias for 7 hidden layer perceptrons and 1 output layer perceptron
-    double biasH[7]/*={1,1,1,1,1,1,1}*/;
+    double biasH[7];
     double *biasHPT = biasH;
-    double biasO/*=1*/;
+    double biasO;
     
     arrayGenerate(biasH,7);
     biasO = randFloat(-1.0,1.0);
@@ -104,19 +111,19 @@ int main()
     neuralNetwork(inputTest,weightH,biasH,weightO,biasO,testRow,itr,sumTestPT,sigTestPT,sigTestHidden,NULL);
     printf("MMSE of testing input after training: %.10lf\n",mmseFunc(sigTestPT,outputTest,testRow));
 
-    //confusion metrix
+    //confusion Matrix
     //training set
-    confusionMetrix(sigOPT,outputTrain,trainRow,trainCMetrix);
-    printf("\nConfusion Metrix for training set:\n");
-    printf("TN: %d      FP: %d\nFN: %d      TP: %d\n",trainCMetrix[0][0],trainCMetrix[0][1],trainCMetrix[1][0],trainCMetrix[1][1]);
-    correctPrediction = trainCMetrix[0][0]+trainCMetrix[1][1];
+    confusionMatrix(sigOPT,outputTrain,trainRow,trainCMatrix);
+    printf("\nConfusion Matrix for training set:\n");
+    printf("TN: %d      FP: %d\nFN: %d      TP: %d\n",trainCMatrix[0][0],trainCMatrix[0][1],trainCMatrix[1][0],trainCMatrix[1][1]);
+    correctPrediction = trainCMatrix[0][0]+trainCMatrix[1][1];
     accuracy = (correctPrediction/(double)trainRow)*100.0;
     printf("Accuracy: %.2lf%%\n", accuracy);
     //testing set
-    confusionMetrix(sigTestPT,outputTest,testRow,testCMetrix);
-    printf("\nConfusion Metrix for testing set:\n");
-    printf("TN: %d      FP: %d\nFN: %d      TP: %d\n",testCMetrix[0][0],testCMetrix[0][1],testCMetrix[1][0],testCMetrix[1][1]);
-    correctPrediction = testCMetrix[0][0]+testCMetrix[1][1];
+    confusionMatrix(sigTestPT,outputTest,testRow,testCMatrix);
+    printf("\nConfusion Matrix for testing set:\n");
+    printf("TN: %d      FP: %d\nFN: %d      TP: %d\n",testCMatrix[0][0],testCMatrix[0][1],testCMatrix[1][0],testCMatrix[1][1]);
+    correctPrediction = testCMatrix[0][0]+testCMatrix[1][1];
     accuracy = (correctPrediction/(double)testRow)*100.0;
     printf("Accuracy: %.2f%%\n", accuracy);
 

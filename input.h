@@ -10,7 +10,6 @@ double outputTest[10];//1D array for testing data output
 
 //function prototype
 void inputData(char *filename);
-int traverseArray(int m,int n,double array[m][n]);
 
 //function for file access and return an array storing package of pointers
 void inputData(char *filename)
@@ -82,19 +81,4 @@ void inputData(char *filename)
         traverseArray(10,1,outputTest); */
 
     }
-}
-
-//function for printing each element of 2D array, row by column
-int traverseArray(int m,int n,double array[m][n])
-{
-    for(int i=0;i<m;i++)
-    {
-            printf("Array %d: ",i+1);
-            for(int j=0;j<n;j++)
-            {
-                printf("%.2f ",array[i][j]);
-            }
-            printf("\n");
-        }
-    return 0;
 }

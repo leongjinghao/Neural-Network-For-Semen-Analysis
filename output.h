@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void outputMAE(FILE *outputFile, int itr, double mae);
-void confusionMetrix(double *sigPT, double* actPT, int row, int *cMetrix);
+void confusionMatrix(double *sigPT, double* actPT, int row, int *cMatrix);
 
 void outputMAE(FILE *outputFile, int itr, double mae)
 {
@@ -10,7 +10,7 @@ void outputMAE(FILE *outputFile, int itr, double mae)
     fprintf(outputFile,"%d  %.10f\n",itr,mae);
 }
 
-void confusionMetrix(double *sigPT, double* actPT, int row, int *cMetrix)
+void confusionMatrix(double *sigPT, double* actPT, int row, int *cMatrix)
 {
     //temporary pointers
     double *tempSigPT = sigPT;
@@ -24,14 +24,14 @@ void confusionMetrix(double *sigPT, double* actPT, int row, int *cMetrix)
             //if guess result is also positive, it is a true positive
             if (*tempSigPT >= 0.5)
             {
-                //increment counter at cell cMetrix[1][1]
-                *(cMetrix+3)+=1;
+                //increment counter at cell cMatrix[1][1]
+                *(cMatrix+3)+=1;
             }
             //if guess result is negative, it is a false negative
             else
             {
-                //increment counter at cell cMetrix[1][1]
-                *(cMetrix+2)+=1;
+                //increment counter at cell cMatrix[1][1]
+                *(cMatrix+2)+=1;
             }
             
         }
@@ -41,14 +41,14 @@ void confusionMetrix(double *sigPT, double* actPT, int row, int *cMetrix)
             //if guess reuslt is positive, it is a false positive
             if (*tempSigPT >= 0.5)
             {
-                //increment counter at cell cMetrix[0][1]
-                *(cMetrix+1)+=1;
+                //increment counter at cell cMatrix[0][1]
+                *(cMatrix+1)+=1;
             }
             //if guess result is also negative, it is a true positive
             else
             {
-                //increment counter at cell cMetrix[0][0]
-                *(cMetrix)+=1;
+                //increment counter at cell cMatrix[0][0]
+                *(cMatrix)+=1;
             }
             
         }

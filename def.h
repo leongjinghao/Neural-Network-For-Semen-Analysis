@@ -1,4 +1,4 @@
-#define FILENAME "fertility_Diagnosis_Data_Group1_4.txt"
+#define FILENAME "fertility_Diagnosis_Data_Group9_13.txt"
 #define FILEOUT "mae_Output.txt"
 #define trainRow 90
 #define testRow 10
